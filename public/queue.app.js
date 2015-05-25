@@ -1,4 +1,4 @@
-(function () {
+(function() {
 
     angular.module('qudini.QueueApp', [])
         .controller('QueueCtrl', QueueCtrl)
@@ -14,28 +14,27 @@
         _getCustomers();
         _getServedCustomers();
 
-        $scope.onCustomerAdded = function(){
-            console.log( 'customers added' );
+        $scope.onCustomerAdded = function() {
             _getCustomers();
         }
 
-        $scope.onCustomerRemoved = function(){
+        $scope.onCustomerRemoved = function() {
             _getCustomers();
         }
 
-        $scope.onCustomerServed = function(){
+        $scope.onCustomerServed = function() {
             _getCustomers();
             _getServedCustomers()
         }
 
-        function _getServedCustomers(){
-            return $http.get('/api/customers/served').then(function(res){
+        function _getServedCustomers() {
+            return $http.get('/api/customers/served').then(function(res) {
                 $scope.customersServed = res.data;
             })
         }
 
-        function _getCustomers(){
-            return $http.get('/api/customers').then(function(res){
+        function _getCustomers() {
+            return $http.get('/api/customers').then(function(res) {
                 $scope.customers = res.data;
             })
         }
@@ -43,4 +42,3 @@
 
 
 })()
-

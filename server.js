@@ -17,20 +17,28 @@ var servedCustomers = [
 ];
 
 function serveCustomer(id){
+    console.log( id );
     customers = customers.filter(function(customer){
         if(customer.id == id){
             customer.status = 'served';
             servedCustomers.push(customer);
+
+            console.log( 'customer served.' );
+
             return false;
         }else{
+            console.log( 'customer not served.' );
             return true;
         }
     })
 }
 
 function addCustomer(customer){
-    customer.id = uuid.v4();
+    customer.id         = uuid.v4();
+    customer.joinedTime = new Date().toString();
     customers.push(customer);
+    console.log( 'customer added' );
+    console.log( customer );
 }
 
 function removeCustomer(targetCustomerId){
@@ -38,6 +46,7 @@ function removeCustomer(targetCustomerId){
     customers = customers.filter(function(customer){
         return customer.id != targetCustomerId;
     })
+    console.log( 'customer removed.' );
 }
 
 
@@ -52,11 +61,11 @@ app.get('/api/customers/served', function(req,res){
     res.send(servedCustomers);
 })
 app.post('/api/customer/add', function(req,res){
-    addCustomer(req.body);
+    addCustomer(req.body );
     res.end('Customer was added!');
 });
 app.post('/api/customer/serve', function(req,res){
-    serveCustomer(req.body.id);
+    serveCustomer(req.query.id);
     res.end('Customer was served!');
 });
 app.delete('/api/customer/remove', function(req,res){

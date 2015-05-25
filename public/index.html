@@ -1,28 +1,58 @@
 <!DOCTYPE html>
 <html>
+
 <head lang="en">
     <meta charset="UTF-8">
     <title>Queue App</title>
+    <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <script src="/bower_components/angularjs/angular.min.js"></script>
-    <script src="/QueueApp.js"></script>
-    <script src="/customer/Customer.js"></script>
-    <script src="/add-customer/AddCustomer.js"></script>
+    <script src="/bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+    <script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="/bower_components/lodash/lodash.min.js"></script>
+    <script src="/queue.app.js"></script>
+    <script src="/customer/customer.js"></script>
+    <script src="/add-customer/add-customer.js"></script>
 </head>
-<body class="Queue" ng-app="qudini.QueueApp" ng-controller="QueueCtrl">
 
-    <h2>Add Customer</h2>
-    <add-customer on-added="onCustomerAdded()"></add-customer>
-    <h2>Queueing Customers</h2>
-    <ul class="Queue-customer-list">
-        <li ng-repeat="customerData in customers">
-            <customer customer="customerData" on-served="onCustomerServed" on-removed="onCustomerRemoved"></customer>
-        </li>
-    </ul>
-    <h2>Served customers</h2>
-    <ul class="Queue-customer-served-list">
-        <li ng-repeat="customerData in customersServed">
-            <customer customer="customerData" on-served="onCustomerServed" on-removed="onCustomerRemoved"></customer>
-        </li>
-    </ul>
+<body class="Queue" ng-app="qudini.QueueApp" ng-controller="QueueCtrl">
+    <div class="container">
+        <nav class="navbar navbar-static-top navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="">
+                        <span class="glyphicon glyphicon-home"></span> Qudini Test App
+                    </a>
+                </div>
+            </div>
+        </nav>
+        <div class="jumbotron text-center">
+            <add-customer customers="customers" on-added="onCustomerAdded()"></add-customer>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-21">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <h3 class="text-center">Queueing Customers</h3>
+                        <hr />
+                        <customers customers="customers" customers-served="customersServed" on-served="onCustomerServed()" on-removed="onCustomerRemoved()" queue="true"></customers>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <h3 class="text-center">Served Customers</h3>
+                        <hr />
+                        <customers customers="customers" customers-served="customersServed" on-served="onCustomerServed" on-removed="onCustomerRemoved" queue="false"></customers>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="footer">
+            <div class="pull-right">Nathanael O. Hinay, Applicant</div>
+        </div>
+    </div>
 </body>
+
 </html>

@@ -1,6 +1,6 @@
-(function () {
+(function() {
     angular.module('qudini.QueueApp')
-        .directive('customer', Customer)
+        .directive('customers', Customers)
 
     /**
      * The <customer> directive is responsible for:
@@ -8,34 +8,61 @@
      * - calculating queued time
      * - removing customer from the queue
      */
-    function Customer($http){
+    function Customers($http) {
 
-        return{
+        return {
             restrict: 'E',
-            scope:{
-                customer: '=',
-
+            scope: {
+                customers: '=',
+                customersServed: '=',
+                queue: '=',
                 onRemoved: '&',
                 onServed: '&'
             },
             templateUrl: '/customer/customer.html',
-            link: function(scope){
+            link: function(scope) {
 
                 // calculate how long the customer has queued for
-                scope.queuedTime = new Date() - new Date(scope.customer.joinedTime);
+                scope.queuedTime = function(customer) {
+                    return new Date() - new Date(scope.customer.joinedTime);
+                };
 
-                scope.remove = function(){
+                scope.serveCustomer = function(customer) {
+                    scope.customersServed.push(customer);
+                    scope.customers = _.without(scope.customers, customer);
+
+                    // persist to DB
+                    // TODO: catch errors
                     $http({
-                        method: 'DELETE',
-                        url: '/api/customer/remove',
-                        params: {id: scope.customer.id}
-                    }).then(function(res){
-                        scope.onRemoved()()
-                    })
+                        'method': 'POST',
+                        'url': '/api/customer/serve',
+                        'params': {
+                            'id': customer.id
+                        }
+                    }).then(function(res) {
+                        console.log(res);
+                    });
+                };
+
+                scope.deleteCustomer = function(customer) {
+                    scope.customers = _.without(scope.customers, customer);
+
+                    // persist to database
+                    // TODO: catch errors
+                    $http({
+                        'method': 'DELETE',
+                        'url': '/api/customer/remove',
+                        'params': {
+                            'id': customer.id
+                        }
+                    }).then(function(res) {
+                        console.log(res);
+                        scope.onRemoved();
+                    });
+
                 };
             }
         }
     }
 
 })()
-

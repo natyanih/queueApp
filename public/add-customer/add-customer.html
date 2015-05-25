@@ -1,8 +1,13 @@
-<div class="AddCustomer">
-    <input type="text" placeholder="Name" ng-model="name"/>
-    <select ng-options="product.name for product in products" ng-model="product" placeholder="Product">
-        <option value="">Choose Product</option>
-    </select>
-    <button ng-click="addCustomer()">Add</button>
+<form class="form-inline">
+  <div class="form-group">
+    <label class="sr-only" for="name">Customer: </label>
+    <input type="text" class="form-control" id="name" ng-model="name" placeholder="Enter name" ng-change="setDisabled()">
+  </div>
+  <div class="form-group">
+  <select class="form-control" ng-options="product.name for product in products" ng-model="product" placeholder="Product" ng-change="setDisabled()">
+    <option value="">Choose Product</option>
+  </select>
 </div>
+  <button class="btn btn-primary" ng-click="addCustomer()" ng-disabled="disabled">Queue Customer</button>
+</form>
 

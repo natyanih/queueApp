@@ -11,6 +11,7 @@
             },
             templateUrl: '/add-customer/add-customer.html',
             link: function(scope) {
+                scope.disabled = true;
 
                 scope.products = [{
                     name: 'Grammatical advice'
@@ -19,6 +20,14 @@
                 }, {
                     name: 'Cryptography advice'
                 }];
+
+                scope.setDisabled = function() {
+                    if (scope.name.length && scope.product && scope.product.name.length) {
+                        scope.disabled = false;
+                    } else {
+                        scope.disabled = true;
+                    }
+                };
 
                 scope.addCustomer = function() {
 
@@ -37,7 +46,9 @@
                         },
                         data: data
                     }).then(function(res) {
-                        console.log( 'added' )
+                        scope.name     = '';
+                        scope.disabled = true;
+
                         scope.onAdded();
                     });
                 }
